@@ -22,6 +22,6 @@ __pycache__/
 *.swo
 
 # Project specific caches or outputs
-data/chroma_db/
+data/
 chroma_db/
 *.log
