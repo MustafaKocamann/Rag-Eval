@@ -24,4 +24,5 @@ __pycache__/
 # Project specific caches or outputs
 data/
 chroma_db/
+chroma_store/
 *.log

@@ -20,21 +20,23 @@ def load_transcripts():
     docs = []
     for path in glob.glob(f"{DATA_DIR}/*.vtt"):
         lines = []
-        for line in open(path):
-            line = line.strip()
-            if not line or line == "WEBVTT" or "-->" in line:
-                continue
-            lines.append(line)
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line == "WEBVTT" or "-->" in line:
+                    continue
+                lines.append(line)
         text = " ".join(lines)
 
-        session = re.search(r"Session[ _]*(\d+)", path).group(1)
+        match = re.search(r"(\d+)", os.path.basename(path))
+        session = match.group(1) if match else "unknown"
 
         docs.append(Document(page_content=text, metadata={"session": session}))
 
     return docs
 
 
-# 2. BUILD chunk, embed once, and keep it on disk so we don't re-embed
+# 2. Build chunk, embed once, and keep it on disk so we don't re-embed
 def load_store():
     embeddings = HuggingFaceEmbeddings(model="all-MiniLM-L6-v2")
 
